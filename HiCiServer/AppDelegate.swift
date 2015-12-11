@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import HockeySDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let betaIdentifier = "a72e924c69ed4ad2b3de20d17ef7b839"
+        
+        // Hockey SDK entrypoint.
+        #if (arch(armv7) || arch(arm64)) && os(iOS)
+            // Hockey shouldn't be run on simulator.
+            BITHockeyManager.sharedHockeyManager().configureWithIdentifier(betaIdentifier);
+            BITHockeyManager.sharedHockeyManager().startManager();
+            BITHockeyManager.sharedHockeyManager().authenticator.authenticateInstallation();
+        #endif
+        
+        
         return true
     }
 
